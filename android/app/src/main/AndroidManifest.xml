@@ -2,7 +2,7 @@
     package="com.example.catfacts">
     <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="catfacts"
+        android:label="CatFacts"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
