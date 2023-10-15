@@ -55,6 +55,8 @@ class CatFactBloc extends Bloc<CatFactEvent, CatFactState> {
   void _onFetchRandomCatevent(
       FetchRandomCatFactEvent event, Emitter<CatFactState> emit) async {
     try {
+
+      if(catFacts.isEmpty) return;
       final fact = await apiSource.fetchRandomCatFact();
 
       final index = Random().nextInt(catFacts.length - 1);

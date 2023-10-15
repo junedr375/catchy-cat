@@ -24,21 +24,15 @@ class _CatFactsFeedState extends State<CatFactsFeed> {
   @override
   void initState() {
     super.initState();
-     _startTimer();
+    _startTimer();
   }
 
   _startTimer() {
     _timer = Timer.periodic(Duration(seconds: 5), (timer) {
-      print('isPaused: $_isPaused');
+      debugPrint('isPaused: $_isPaused');
       if (_isPaused) return;
       final catFactBloc = BlocProvider.of<CatFactBloc>(context);
       catFactBloc.add(const FetchRandomCatFactEvent());
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Hey! Cat Enthusiast, new facts added'),
-          duration: Duration(seconds: 1),
-        ),
-      );
     });
   }
 
@@ -49,22 +43,25 @@ class _CatFactsFeedState extends State<CatFactsFeed> {
         if (state is CatFactInitial || state is CatFactLoading) {
           return const Center(child: CircularProgressIndicator());
         } else if (state is CatFactError) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('Failed to load cat facts: ${state.error}'),
-              InkWell(
-                onTap: () {
-                  BlocProvider.of<CatFactBloc>(context)
-                      .add(const FetchCatFactsEvent());
-                },
-                child: Icon(
-                  Icons.refresh,
-                  size: 100,
-                  color: Colors.teal,
+          return Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('Failed to load cat facts: ${state.error}'),
+                InkWell(
+                  onTap: () {
+                    BlocProvider.of<CatFactBloc>(context)
+                        .add(const FetchCatFactsEvent());
+                  },
+                  child: Icon(
+                    Icons.refresh,
+                    size: 100,
+                    color: Colors.teal,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           );
         } else if (state is CatFactLoaded) {
           final catFacts = state.catFacts;
@@ -77,7 +74,7 @@ class _CatFactsFeedState extends State<CatFactsFeed> {
                 child: NotificationListener<ScrollNotification>(
               onNotification: (notification) {
                 if (notification is ScrollStartNotification) {
-                   _pauseTimer();
+                  _pauseTimer();
                 }
                 return true;
               },
@@ -105,14 +102,14 @@ class _CatFactsFeedState extends State<CatFactsFeed> {
 
   void _pauseTimer() {
     _isPaused = true;
-    if(!_isToastShown) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Hey! Cat Enthusiast, new facts will be added soon'),
-        duration: Duration(seconds: 1),
-      ),
-    );
-    _isToastShown = true;
+    if (!_isToastShown) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Hey! Cat Enthusiast, new facts will be added soon'),
+          duration: Duration(seconds: 1),
+        ),
+      );
+      _isToastShown = true;
     }
 
     Future.delayed(const Duration(seconds: 1), () {
