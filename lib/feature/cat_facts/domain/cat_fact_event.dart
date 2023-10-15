@@ -9,12 +9,15 @@ class FetchCatFactsEvent extends CatFactEvent {
   const FetchCatFactsEvent();
 }
 
-class FetchMoreCatFactsEvent extends CatFactEvent {
-  const FetchMoreCatFactsEvent();
-}
-
 class FetchRandomCatFactEvent extends CatFactEvent {
   const FetchRandomCatFactEvent();
+}
+
+class AddVisibilityEvent extends CatFactEvent {
+  final VisibilityModel visibilityModel;
+  const AddVisibilityEvent(
+    this.visibilityModel,
+  );
 }
 
 class AddToFavoriteEvent extends CatFactEvent {

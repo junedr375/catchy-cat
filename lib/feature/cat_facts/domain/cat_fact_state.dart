@@ -15,11 +15,11 @@ class CatFactLoading extends CatFactState {
 
 class CatFactLoaded extends CatFactState {
   final List<CatFact> catFacts;
-  final List<CatFact> randomFacts;
+  // final List<CatFact> randomFacts;
 
   const CatFactLoaded({
     required this.catFacts,
-    required this.randomFacts,
+    // required this.randomFacts,
   });
 }
 
