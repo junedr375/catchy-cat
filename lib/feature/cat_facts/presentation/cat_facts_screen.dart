@@ -43,9 +43,9 @@ class CatFactsScreen extends StatelessWidget {
 
   String getRandomImage() {
     final random = Random();
-    final randomImage = random.nextInt(3);
+    final randomImage = random.nextInt(100);
 
-    switch (randomImage) {
+    switch (randomImage % 3) {
       case 0:
         return Images.cat1;
       case 1:
