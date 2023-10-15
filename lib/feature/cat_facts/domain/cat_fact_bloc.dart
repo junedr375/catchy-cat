@@ -1,11 +1,15 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:bloc/bloc.dart';
 import 'package:catfacts/feature/cat_facts/data/api/api_source.dart';
+import 'package:catfacts/feature/cat_facts/data/model/visibility.dart';
 import 'package:hive/hive.dart';
 import 'package:meta/meta.dart';
 import 'package:flutter/foundation.dart';
 
 import 'package:catfacts/feature/cat_facts/data/model/cat_fact.dart';
+
+import '../../../utils/database_helper.dart';
 
 part 'cat_fact_event.dart';
 part 'cat_fact_state.dart';
@@ -14,15 +18,14 @@ class CatFactBloc extends Bloc<CatFactEvent, CatFactState> {
   final ApiSource apiSource;
 
   final List<CatFact> catFacts = [];
-  final List<CatFact> randomFacts = [];
 
   late Box<CatFact> box;
 
   CatFactBloc({required this.apiSource}) : super(CatFactInitial()) {
     _loadHiveBox();
     on<FetchCatFactsEvent>(_onFetchCatevent);
-    on<FetchMoreCatFactsEvent>(_onFetchMoreCatevent);
     on<FetchRandomCatFactEvent>(_onFetchRandomCatevent);
+    on<AddVisibilityEvent>(_addVisibilityToDB);
     on<AddToFavoriteEvent>(_onAddToFavoriteEvent);
     on<RemoveFromFavoriteEvent>(_onRemoveFromFavoriteEvent);
   }
@@ -40,29 +43,9 @@ class CatFactBloc extends Bloc<CatFactEvent, CatFactState> {
       catFacts
         ..clear()
         ..addAll(facts);
-      randomFacts
-        ..clear()
-        ..addAll(facts.take(5));
 
       emit(CatFactLoaded(
         catFacts: catFacts,
-        randomFacts: randomFacts,
-      ));
-    } catch (e) {
-      emit(CatFactError(error: e.toString()));
-    }
-  }
-
-  void _onFetchMoreCatevent(
-      FetchMoreCatFactsEvent event, Emitter<CatFactState> emit) async {
-    try {
-      final facts = await apiSource.fetchCatFacts();
-
-      catFacts.addAll(facts);
-
-      emit(CatFactLoaded(
-        catFacts: catFacts,
-        randomFacts: randomFacts,
       ));
     } catch (e) {
       emit(CatFactError(error: e.toString()));
@@ -72,17 +55,28 @@ class CatFactBloc extends Bloc<CatFactEvent, CatFactState> {
   void _onFetchRandomCatevent(
       FetchRandomCatFactEvent event, Emitter<CatFactState> emit) async {
     try {
+
+      if(catFacts.isEmpty) return;
       final fact = await apiSource.fetchRandomCatFact();
-      randomFacts
-        ..removeAt(0)
-        ..add(fact);
+
+      final index = Random().nextInt(catFacts.length - 1);
+
+      catFacts.insert(index, fact);
 
       emit(CatFactLoaded(
         catFacts: catFacts,
-        randomFacts: randomFacts,
       ));
     } catch (e) {
       emit(CatFactError(error: e.toString()));
+    }
+  }
+
+  void _addVisibilityToDB(
+      AddVisibilityEvent event, Emitter<CatFactState> emit) async {
+    try {
+      await DatabaseHelper.instance.insertCatFact(event.visibilityModel);
+    } catch (e) {
+      print(e);
     }
   }
 
@@ -92,7 +86,6 @@ class CatFactBloc extends Bloc<CatFactEvent, CatFactState> {
       await box.add(event.catFact);
       emit(CatFactLoaded(
         catFacts: catFacts,
-        randomFacts: randomFacts,
       ));
     } catch (e) {
       emit(CatFactError(error: e.toString()));
@@ -107,7 +100,6 @@ class CatFactBloc extends Bloc<CatFactEvent, CatFactState> {
       await box.deleteAt(index);
       emit(CatFactLoaded(
         catFacts: catFacts,
-        randomFacts: randomFacts,
       ));
     } catch (e) {
       print(e);

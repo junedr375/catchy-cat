@@ -24,7 +24,7 @@ class ApiSource {
   Future<List<CatFact>> fetchCatFacts() async {
     final randInt = Random().nextInt(20);
     final response = await httpClient
-        .get(Uri.parse('https://catfact.ninja/facts?&limit=10&page=$randInt'));
+        .get(Uri.parse('https://catfact.ninja/facts?&limit=20&page=$randInt'));
     if (response.statusCode == 200) {
       final data = json.decode(response.body) as Map<String, dynamic>;
       final catFacts = <CatFact>[];

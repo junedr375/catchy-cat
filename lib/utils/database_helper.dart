@@ -1,3 +1,5 @@
+import 'package:catfacts/feature/cat_facts/data/model/visibility.dart';
+import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -31,17 +33,22 @@ class DatabaseHelper {
     ''');
   }
 
-  Future<void> insertCatFact(
-      String fact, DateTime appearanceTime, int visibleDuration) async {
-    final db = await _database;
-    await db!.insert(
-      _tableName,
-      {
-        'fact': fact,
-        'appearance_time': appearanceTime.toIso8601String(),
-        'visible_duration': visibleDuration,
-      },
-    );
+  Future<void> insertCatFact(VisibilityModel visibilty) async {
+    try {
+      debugPrint('inserting cat fact ${visibilty.fact}');
+
+      final db = await _database;
+      await db!.insert(
+        _tableName,
+        {
+          'fact': visibilty.fact,
+          'appearance_time': visibilty.appearanceTime.toIso8601String(),
+          'visible_duration': visibilty.visibleDuration,
+        },
+      );
+    } catch (e) {
+      debugPrint('error inserting cat fact ${e.toString()}');
+    }
   }
 
   Future<List<Map<String, dynamic>>> getAllCatFacts() async {
