@@ -15,12 +15,8 @@ class CatFactLoading extends CatFactState {
 
 class CatFactLoaded extends CatFactState {
   final List<CatFact> catFacts;
-  // final List<CatFact> randomFacts;
 
-  const CatFactLoaded({
-    required this.catFacts,
-    // required this.randomFacts,
-  });
+  const CatFactLoaded({required this.catFacts});
 }
 
 class CatFactError extends CatFactState {

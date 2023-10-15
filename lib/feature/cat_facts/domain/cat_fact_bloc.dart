@@ -44,9 +44,7 @@ class CatFactBloc extends Bloc<CatFactEvent, CatFactState> {
         ..clear()
         ..addAll(facts);
 
-      emit(CatFactLoaded(
-        catFacts: catFacts,
-      ));
+      emit(CatFactLoaded(catFacts: catFacts));
     } catch (e) {
       emit(CatFactError(error: e.toString()));
     }
@@ -55,17 +53,11 @@ class CatFactBloc extends Bloc<CatFactEvent, CatFactState> {
   void _onFetchRandomCatevent(
       FetchRandomCatFactEvent event, Emitter<CatFactState> emit) async {
     try {
-
-      if(catFacts.isEmpty) return;
+      if (catFacts.isEmpty) return;
       final fact = await apiSource.fetchRandomCatFact();
-
       final index = Random().nextInt(catFacts.length - 1);
-
       catFacts.insert(index, fact);
-
-      emit(CatFactLoaded(
-        catFacts: catFacts,
-      ));
+      emit(CatFactLoaded(catFacts: catFacts));
     } catch (e) {
       emit(CatFactError(error: e.toString()));
     }
@@ -84,9 +76,7 @@ class CatFactBloc extends Bloc<CatFactEvent, CatFactState> {
       AddToFavoriteEvent event, Emitter<CatFactState> emit) async {
     try {
       await box.add(event.catFact);
-      emit(CatFactLoaded(
-        catFacts: catFacts,
-      ));
+      emit(CatFactLoaded(catFacts: catFacts));
     } catch (e) {
       emit(CatFactError(error: e.toString()));
     }
@@ -98,9 +88,7 @@ class CatFactBloc extends Bloc<CatFactEvent, CatFactState> {
       final index = box.values.toList().indexOf(event.catFact);
 
       await box.deleteAt(index);
-      emit(CatFactLoaded(
-        catFacts: catFacts,
-      ));
+      emit(CatFactLoaded(catFacts: catFacts));
     } catch (e) {
       print(e);
       emit(CatFactError(error: e.toString()));
