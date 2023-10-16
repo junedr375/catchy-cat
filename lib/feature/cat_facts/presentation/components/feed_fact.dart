@@ -15,7 +15,9 @@ class CatFactsFeed extends StatefulWidget {
   State<CatFactsFeed> createState() => _CatFactsFeedState();
 }
 
-class _CatFactsFeedState extends State<CatFactsFeed> {
+
+// add navigationListener 
+class _CatFactsFeedState extends State<CatFactsFeed> with WidgetsBindingObserver {
   Timer? _timer;
   bool _isPaused = false;
 
@@ -24,8 +26,23 @@ class _CatFactsFeedState extends State<CatFactsFeed> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _startTimer();
   }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    switch (state) {
+      case AppLifecycleState.resumed:
+        _resumeTimer();
+        break;
+      case AppLifecycleState.inactive:
+      case AppLifecycleState.paused:
+      case AppLifecycleState.detached:
+        _pauseTimer();
+        break;
+    }
+}
 
   _startTimer() {
     _timer = Timer.periodic(Duration(seconds: 5), (timer) {
@@ -75,6 +92,19 @@ class _CatFactsFeedState extends State<CatFactsFeed> {
               onNotification: (notification) {
                 if (notification is ScrollStartNotification) {
                   _pauseTimer();
+                  if (!_isToastShown) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                            'Hey! Cat Enthusiast, new facts will be added soon'),
+                        duration: Duration(seconds: 1),
+                      ),
+                    );
+                    _isToastShown = true;
+                  }
+                  Future.delayed(const Duration(seconds: 1), () {
+                 _resumeTimer();
+                  });
                 }
                 return true;
               },
@@ -102,19 +132,10 @@ class _CatFactsFeedState extends State<CatFactsFeed> {
 
   void _pauseTimer() {
     _isPaused = true;
-    if (!_isToastShown) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Hey! Cat Enthusiast, new facts will be added soon'),
-          duration: Duration(seconds: 1),
-        ),
-      );
-      _isToastShown = true;
-    }
+  }
 
-    Future.delayed(const Duration(seconds: 1), () {
-      _isPaused = false;
-    });
+  void _resumeTimer() {
+    _isPaused = false;
   }
 
   bool isAddedToFavorite(BuildContext context, CatFact catFact) {
@@ -125,6 +146,7 @@ class _CatFactsFeedState extends State<CatFactsFeed> {
   @override
   void dispose() {
     _timer?.cancel();
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 }
