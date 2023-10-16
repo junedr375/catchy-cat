@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "357029265867",
+    "project_id": "catfacts-f4877",
+    "storage_bucket": "catfacts-f4877.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:357029265867:android:0a241eb1b23dcfcd47b64e",
+        "android_client_info": {
+          "package_name": "com.example.catfacts"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCtV7rNfN1ksilTzHXJg160neUd-oEwxvc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

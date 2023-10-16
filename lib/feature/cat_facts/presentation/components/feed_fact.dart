@@ -15,9 +15,8 @@ class CatFactsFeed extends StatefulWidget {
   State<CatFactsFeed> createState() => _CatFactsFeedState();
 }
 
-
-// add navigationListener 
-class _CatFactsFeedState extends State<CatFactsFeed> with WidgetsBindingObserver {
+class _CatFactsFeedState extends State<CatFactsFeed>
+    with WidgetsBindingObserver {
   Timer? _timer;
   bool _isPaused = false;
 
@@ -42,7 +41,7 @@ class _CatFactsFeedState extends State<CatFactsFeed> with WidgetsBindingObserver
         _pauseTimer();
         break;
     }
-}
+  }
 
   _startTimer() {
     _timer = Timer.periodic(Duration(seconds: 5), (timer) {
@@ -103,7 +102,7 @@ class _CatFactsFeedState extends State<CatFactsFeed> with WidgetsBindingObserver
                     _isToastShown = true;
                   }
                   Future.delayed(const Duration(seconds: 1), () {
-                 _resumeTimer();
+                    _resumeTimer();
                   });
                 }
                 return true;
@@ -221,7 +220,7 @@ class _CatFactTileState extends State<_CatFactTile> {
           disAppearanceTime.difference(appearanceTime).inMilliseconds;
 
       debugPrint(
-          'fact: ${widget.fact.fact.substring(0, widget.fact.fact.length > 30 ? 30 : widget.fact.fact.length)} visibile For ${visibleDuration} ms');
+          'fact: ${widget.fact.factName} visibile For ${visibleDuration} ms');
 
       BlocProvider.of<CatFactBloc>(context).add(
         AddVisibilityEvent(

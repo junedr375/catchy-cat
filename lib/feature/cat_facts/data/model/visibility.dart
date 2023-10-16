@@ -8,4 +8,12 @@ class VisibilityModel {
     required this.appearanceTime,
     required this.visibleDuration,
   });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'fact': fact,
+      'appearanceTime': appearanceTime.toIso8601String(),
+      'visibleDuration': visibleDuration,
+    };
+  }
 }

@@ -15,6 +15,8 @@ class CatFact {
       length: int.tryParse(json['length']?.toString() ?? '0') ?? 0,
     );
   }
+
+  String get factName => fact.substring(0, fact.length > 20 ? 20 : fact.length);
 }
 
 class CatFactAdapter extends TypeAdapter<CatFact> {
