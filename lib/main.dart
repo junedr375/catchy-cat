@@ -1,17 +1,15 @@
-import 'package:catfacts/feature/cat_facts/data/api/api_source.dart';
-import 'package:catfacts/utils/database_helper.dart';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
-
 import 'package:path_provider/path_provider.dart' as path_provider;
 
+import 'feature/cat_facts/data/api/api_source.dart';
 import 'feature/cat_facts/data/model/cat_fact.dart';
 import 'feature/cat_facts/domain/cat_fact_bloc.dart';
 import 'feature/cat_facts/presentation/cat_facts_screen.dart';
+import 'utils/database_helper.dart';
 
 void main() async {
   try {

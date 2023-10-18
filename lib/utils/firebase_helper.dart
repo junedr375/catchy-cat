@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'database_helper.dart';
-
 class FirestoreHelper {
   final _firestore = FirebaseFirestore.instance;
 
@@ -21,13 +19,13 @@ class FirestoreHelper {
   }) async {
     final batch = _firestore.batch();
 
-    for (var data in data) {
+    for (final val in data) {
       final newDocRef = _firestore
           .collection(collectionName)
           .doc(docId)
           .collection('facts')
           .doc();
-      batch.set(newDocRef, data);
+      batch.set(newDocRef, val);
     }
     try {
       await batch.commit();

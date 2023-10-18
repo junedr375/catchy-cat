@@ -14,13 +14,11 @@ class CatFactLoading extends CatFactState {
 }
 
 class CatFactLoaded extends CatFactState {
-  final List<CatFact> catFacts;
-
   const CatFactLoaded({required this.catFacts});
+  final List<CatFact> catFacts;
 }
 
 class CatFactError extends CatFactState {
-  final String error;
-
   const CatFactError({required this.error});
+  final String error;
 }

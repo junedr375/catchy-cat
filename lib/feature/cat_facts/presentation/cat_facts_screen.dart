@@ -13,8 +13,7 @@ class CatFactsScreen extends StatefulWidget {
 class _CatFactsScreenState extends State<CatFactsScreen> {
   @override
   Widget build(BuildContext context) {
-    final catFactBloc = BlocProvider.of<CatFactBloc>(context);
-    catFactBloc.add(const FetchCatFactsEvent());
+    BlocProvider.of<CatFactBloc>(context).add(const FetchCatFactsEvent());
     final size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.grey[100],
@@ -23,7 +22,7 @@ class _CatFactsScreenState extends State<CatFactsScreen> {
         width: size.width,
         margin: const EdgeInsets.only(top: 32),
         padding: const EdgeInsets.symmetric(vertical: 16),
-        child: CatFactsFeed(),
+        child: const CatFactsFeed(),
       ),
     );
   }

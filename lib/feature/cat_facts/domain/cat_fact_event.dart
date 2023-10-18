@@ -14,18 +14,18 @@ class FetchRandomCatFactEvent extends CatFactEvent {
 }
 
 class AddVisibilityEvent extends CatFactEvent {
-  final VisibilityModel visibilityModel;
   const AddVisibilityEvent(
     this.visibilityModel,
   );
+  final VisibilityModel visibilityModel;
 }
 
 class AddToFavoriteEvent extends CatFactEvent {
-  final CatFact catFact;
   const AddToFavoriteEvent(this.catFact);
+  final CatFact catFact;
 }
 
 class RemoveFromFavoriteEvent extends CatFactEvent {
-  final CatFact catFact;
   const RemoveFromFavoriteEvent(this.catFact);
+  final CatFact catFact;
 }

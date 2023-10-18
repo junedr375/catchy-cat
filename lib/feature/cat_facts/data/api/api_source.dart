@@ -6,9 +6,8 @@ import 'package:http/http.dart' as http;
 import '../model/cat_fact.dart';
 
 class ApiSource {
-  final http.Client httpClient;
-
   ApiSource({required this.httpClient});
+  final http.Client httpClient;
 
   Future<CatFact> fetchRandomCatFact() async {
     final response = await httpClient
@@ -28,8 +27,8 @@ class ApiSource {
     if (response.statusCode == 200) {
       final data = json.decode(response.body) as Map<String, dynamic>;
       final catFacts = <CatFact>[];
-      for (var catFact in data['data']) {
-        catFacts.add(CatFact.fromJson(catFact));
+      for (final catFact in data['data']) {
+        catFacts.add(CatFact.fromJson(catFact as Map<String, dynamic>));
       }
       return catFacts;
     } else {
